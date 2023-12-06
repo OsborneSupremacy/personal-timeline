@@ -1,6 +1,6 @@
-namespace Personal.Timeline.Web.Models.Timeline3;
+namespace Personal.Timeline.Web.Models.Js3;
 
-public record TimelineText
+public record Js3Text
 {
     public string? Headline { get; init; }
     

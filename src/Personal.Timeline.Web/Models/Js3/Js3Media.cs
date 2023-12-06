@@ -1,6 +1,6 @@
-namespace Personal.Timeline.Web.Models.Timeline3;
+namespace Personal.Timeline.Web.Models.Js3;
 
-public record TimelineMedia
+public record Js3Media
 {
     public string? Url { get; init; }
     

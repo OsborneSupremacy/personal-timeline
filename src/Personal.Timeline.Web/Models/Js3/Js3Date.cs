@@ -1,6 +1,6 @@
-namespace Personal.Timeline.Web.Models.Timeline3;
+namespace Personal.Timeline.Web.Models.Js3;
 
-public record TimelineDate
+public record Js3Date
 {
     public required string Year { get; init; }
     

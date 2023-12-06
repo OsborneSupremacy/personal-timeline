@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Models\Timeline3\" />
+      <Folder Include="Models\Js3\" />
       <Folder Include="wwwroot\css\" />
       <Folder Include="wwwroot\js\" />
       <Folder Include="wwwroot\lib\" />

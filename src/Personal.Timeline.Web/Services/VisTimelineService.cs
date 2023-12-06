@@ -1,8 +1,8 @@
-using Personal.Timeline.Web.Models.VisTimeline;
+using Personal.Timeline.Web.Models.Vis;
 
 namespace Personal.Timeline.Web.Services;
 
-public class VisTimelineService : ITimelineGenerator<VisTimelineTimeline>
+public class VisTimelineService : ITimelineGenerator<VisTimeline>
 {
     private readonly IOutputWriter _outputWriter;
 
@@ -11,27 +11,27 @@ public class VisTimelineService : ITimelineGenerator<VisTimelineTimeline>
         _outputWriter = outputWriter ?? throw new ArgumentNullException(nameof(outputWriter));
     }
 
-    public async Task<VisTimelineTimeline> GenerateAsync(TimelineRequest request)
+    public async Task<VisTimeline> GenerateAsync(TimelineRequest request)
     {
         var groups = await GenerateGroupsAsync(request.Items);
         var items = await GenerateItemsAsync(request.Items, groups);
-        return new VisTimelineTimeline
+        return new VisTimeline
         {
             Groups = groups.Values.ToList(),
             Items = items
         };
     }
 
-    public async Task WriteAsync(VisTimelineTimeline data, string basePath)
+    public async Task WriteAsync(VisTimeline data, string basePath)
     {
-        await _outputWriter.WriteAsync<List<VisTimelineGroup>>(new()
+        await _outputWriter.WriteAsync<List<VisGroup>>(new()
         {
             Data = data.Groups,
             FileName = "output-timeline3.json",
             BasePath = basePath
         });
         
-        await _outputWriter.WriteAsync<List<VisTimelineItem>>(new()
+        await _outputWriter.WriteAsync<List<VisItem>>(new()
         {
             Data = data.Items,
             FileName = "output-timeline3.json",
@@ -39,7 +39,7 @@ public class VisTimelineService : ITimelineGenerator<VisTimelineTimeline>
         });
     }
 
-    private static Task<Dictionary<string, VisTimelineGroup>> GenerateGroupsAsync(
+    private static Task<Dictionary<string, VisGroup>> GenerateGroupsAsync(
         IEnumerable<SourceItem> records
     )
     {
@@ -49,19 +49,19 @@ public class VisTimelineService : ITimelineGenerator<VisTimelineTimeline>
             .ToDictionary
             (
                 g => g,
-                g => new VisTimelineGroup() { Id = g, Title = g, Content = g }
+                g => new VisGroup() { Id = g, Title = g, Content = g }
             );
 
         return Task.FromResult(groups);
     }
     
-    private static Task<List<VisTimelineItem>> GenerateItemsAsync(
+    private static Task<List<VisItem>> GenerateItemsAsync(
         List<SourceItem> records,
-        IReadOnlyDictionary<string, VisTimelineGroup> groupDictionary
+        IReadOnlyDictionary<string, VisGroup> groupDictionary
     )
     {
         int id = 0;
-        List<VisTimelineItem> items = new();
+        List<VisItem> items = new();
         
         foreach (var record in records)
         {
@@ -78,7 +78,7 @@ public class VisTimelineService : ITimelineGenerator<VisTimelineTimeline>
 
             var group = groupDictionary.GetValueOrDefault(record.Group);
             
-            VisTimelineItem item = new()
+            VisItem item = new()
             {
                 Id = (++id).ToString(),
                 Title = record.Headline ?? string.Empty,

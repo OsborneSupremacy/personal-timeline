@@ -1,26 +1,26 @@
-using Personal.Timeline.Web.Models.Timeline3;
+using Personal.Timeline.Web.Models.Js3;
 
 namespace Personal.Timeline.Web.Services;
 
-public class Timeline3Service : ITimelineGenerator<Timeline3Timeline>
+public class Js3TimelineService : ITimelineGenerator<Js3Timeline>
 {
     private readonly IOutputWriter _outputWriter;
 
-    public Timeline3Service(IOutputWriter outputWriter)
+    public Js3TimelineService(IOutputWriter outputWriter)
     {
         _outputWriter = outputWriter ?? throw new ArgumentNullException(nameof(outputWriter));
     }
 
-    public Task<Timeline3Timeline> GenerateAsync(TimelineRequest request)
+    public Task<Js3Timeline> GenerateAsync(TimelineRequest request)
     {
-        List<Event> events = new();
+        List<Js3Event> events = new();
 
         foreach(var item in request.Items)
         {
-            TimelineDate? endDate = null;
+            Js3Date? endDate = null;
 
             if (item.EndDate.HasValue)
-                endDate = new TimelineDate
+                endDate = new Js3Date
                 {
                     Year = item.EndDate.Value.Year.ToString(),
                     Month = item.EndDate.Value.Month.ToString(),
@@ -38,7 +38,7 @@ public class Timeline3Service : ITimelineGenerator<Timeline3Timeline>
             if (!string.IsNullOrEmpty(item.Url))
                 description.AppendLine($"<p><a href=\"{item.Url}\">{item.UrlDescription}</a></p>");
             
-            events.Add(new Event
+            events.Add(new Js3Event
             {
                 Group = item.Group,
                 Text = new()
@@ -46,7 +46,7 @@ public class Timeline3Service : ITimelineGenerator<Timeline3Timeline>
                     Headline = item.Headline,
                     Text = description.ToString().Replace("\n", string.Empty)
                 },
-                StartDate = new TimelineDate
+                StartDate = new Js3Date
                 {
                     Year = item.StartDate.Year.ToString(),
                     Month = item.StartDate.Month.ToString(),
@@ -56,16 +56,16 @@ public class Timeline3Service : ITimelineGenerator<Timeline3Timeline>
             });
         }
 
-        var timeline = new Timeline3Timeline
+        var timeline = new Js3Timeline
         {
-            Title = new TimelineTitle
+            Title = new Js3Title
             {
-                Media = new TimelineMedia
+                Media = new Js3Media
                 {
                     Url = "/images/main-image.jpeg",
                     Caption = "Ben Osborne something something something."
                 },
-                Text = new TimelineText
+                Text = new Js3Text
                 {
                     Headline = $"Ben Osborne",
                     Text = "<p>Ben Osborne something something something.</p>"
@@ -83,8 +83,8 @@ public class Timeline3Service : ITimelineGenerator<Timeline3Timeline>
         return Task.FromResult(timeline);
     }
 
-    public async Task WriteAsync(Timeline3Timeline data, string basePath) =>
-        await _outputWriter.WriteAsync<Timeline3Timeline>(new()
+    public async Task WriteAsync(Js3Timeline data, string basePath) =>
+        await _outputWriter.WriteAsync<Js3Timeline>(new()
         {
             Data = data,
             FileName = "output-timeline3.json",

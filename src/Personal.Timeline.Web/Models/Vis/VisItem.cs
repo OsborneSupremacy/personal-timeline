@@ -1,6 +1,6 @@
-namespace Personal.Timeline.Web.Models.VisTimeline;
+namespace Personal.Timeline.Web.Models.Vis;
 
-public record VisTimelineItem
+public record VisItem
 {
     public required string Id { get; init; }
     
