@@ -2,9 +2,9 @@ namespace Personal.Timeline.Web.Models.Timeline3;
 
 public record TimelineDate
 {
-    public string? Year { get; set; }
+    public required string Year { get; init; }
     
-    public string? Month { get; set; }
+    public required string Month { get; init; }
     
-    public string? Day { get; set; }
+    public required string Day { get; init; }
 }

@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Models.Timeline3;
 
-public record Timeline
+public record Timeline3Timeline
 {
     public required TimelineTitle Title { get; init; }
     

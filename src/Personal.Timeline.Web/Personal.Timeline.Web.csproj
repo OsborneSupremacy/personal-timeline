@@ -7,10 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Abstractions\" />
-      <Folder Include="Models\Messaging\" />
       <Folder Include="Models\Timeline3\" />
-      <Folder Include="Models\VisTimeline\" />
       <Folder Include="wwwroot\css\" />
       <Folder Include="wwwroot\js\" />
       <Folder Include="wwwroot\lib\" />

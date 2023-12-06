@@ -1,8 +1,8 @@
 namespace Personal.Timeline.Web.Models;
 
-public record FlatRecord
+public record SourceItem
 {
-    public string? Headline { get; init; }
+    public required string Headline { get; init; }
     
     public string? Description1 { get; init; }
     
@@ -12,9 +12,9 @@ public record FlatRecord
     
     public string? UrlDescription { get; init; }
     
-    public DateTime StartDate { get; init; }
+    public required DateTime StartDate { get; init; }
     
     public DateTime? EndDate { get; init; }
     
-    public string? Group { get; init; }
+    public required string Group { get; init; }
 }
