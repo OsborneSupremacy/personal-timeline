@@ -22,9 +22,14 @@ public class OutputWriterService : IOutputWriter
     
     public async Task WriteAsync<T>(
         WriteOutputRequest<T> request
-    ) =>
+    )
+    {
+        if(!Directory.Exists(request.BasePath))
+            Directory.CreateDirectory(request.BasePath);
+        
         await File.WriteAllTextAsync(
             Path.Combine(request.BasePath, request.FileName),
             JsonSerializer.Serialize(request.Data, Options)
         );
+    }
 }
