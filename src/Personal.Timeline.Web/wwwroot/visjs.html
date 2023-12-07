@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Timeline | Basic demo</title>
+
+    <style>
+        body, html {
+            font-family: sans-serif;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha512-XHDcSyqhOoO2ocB7sKOCJEkUjw/pQCJViP1ynpy+EGh/LggzrP6U/V3a++LQTnZT7sCQKeHRyWHfhN2afjXjCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-timeline-graph2d.min.css" integrity="sha512-bbXw0l+sIgE839ldwV4+tEPR4lIelw+Ryj35jm5c6KTgXNJybZJ4DrV+a40zK9kx8pvqNbneG0TGdJBP2jUa4Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<div id="visualization"></div>
+
+<script type="text/javascript">
+
+    createTimeline();
+
+    async function createTimeline() {
+        const container = document.getElementById('visualization');
+
+        const options = {};
+
+        const groupsResponse = await fetch("vis/groups.json");
+        const groups = await groupsResponse.json();
+
+        const itemsResponse = await fetch("vis/items.json");
+        const items = await itemsResponse.json();
+
+        new vis.Timeline(container, items, groups, options);
+    }
+
+</script>
+</body>
+</html>
