@@ -17,4 +17,8 @@
       <PackageReference Include="ClosedXML" Version="0.102.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\timelinejs3.html" />
+    </ItemGroup>
+
 </Project>
