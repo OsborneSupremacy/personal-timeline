@@ -22,7 +22,10 @@ public class TimelineGeneratorService
 
     public async Task GenerateAllAsync()
     {
-        var basePath = Path.Combine(Directory.GetCurrentDirectory(), "output");
+        var basePath = Path.Combine(
+            new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName!, 
+            "output"
+        );
         if(!Directory.Exists(basePath))
             Directory.CreateDirectory(basePath);
 
