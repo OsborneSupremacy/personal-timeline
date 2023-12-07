@@ -87,7 +87,7 @@ public class Js3TimelineService : ITimelineGenerator<Js3Timeline>
         await _outputWriter.WriteAsync<Js3Timeline>(new()
         {
             Data = data,
-            FileName = "output-timeline3.json",
+            FileName = "timeline.json",
             BasePath = basePath
         });
 }

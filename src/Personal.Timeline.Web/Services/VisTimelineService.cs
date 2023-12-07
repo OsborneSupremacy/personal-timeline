@@ -27,14 +27,14 @@ public class VisTimelineService : ITimelineGenerator<VisTimeline>
         await _outputWriter.WriteAsync<List<VisGroup>>(new()
         {
             Data = data.Groups,
-            FileName = "output-timeline3.json",
+            FileName = "groups.json",
             BasePath = basePath
         });
         
         await _outputWriter.WriteAsync<List<VisItem>>(new()
         {
             Data = data.Items,
-            FileName = "output-timeline3.json",
+            FileName = "items.json",
             BasePath = basePath
         });
     }

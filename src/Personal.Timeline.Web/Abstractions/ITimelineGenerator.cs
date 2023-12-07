@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Abstractions;
 
-public interface ITimelineGenerator<T>
+public interface ITimelineGenerator<T> where T: class
 {
     public Task<T> GenerateAsync(TimelineRequest request);
     

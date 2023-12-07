@@ -11,7 +11,7 @@ public class SourceReaderService
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public Task<IEnumerable<SourceItem>> ReadAllAsync()
+    public Task<List<SourceItem>> ReadAllAsync()
     {
         var sourcePath = _configuration["SourceExcelPath"];
         
@@ -33,6 +33,6 @@ public class SourceReaderService
                 Group = row.Cell(8).GetString(),
             });
 
-        return Task.FromResult(items);
+        return Task.FromResult(items.ToList());
     }
 }

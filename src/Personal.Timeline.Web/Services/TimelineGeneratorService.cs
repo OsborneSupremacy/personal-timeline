@@ -1,4 +1,3 @@
-using Personal.Timeline.Web.Models.Js3;
 
 namespace Personal.Timeline.Web.Services;
 
@@ -6,14 +5,14 @@ public class TimelineGeneratorService
 {
     private readonly SourceReaderService _sourceReaderService;
     
-    private readonly ITimelineGenerator<Js3Timeline> _js3TimelineGenerator;
+    private readonly Js3TimelineService _js3TimelineGenerator;
     
-    private readonly ITimelineGenerator<VisTimelineService> _visTimelineGenerator;
+    private readonly VisTimelineService _visTimelineGenerator;
 
     public TimelineGeneratorService(
         SourceReaderService sourceReaderService,
-        ITimelineGenerator<Js3Timeline> js3TimelineGenerator,
-        ITimelineGenerator<VisTimelineService> visTimelineGenerator
+        Js3TimelineService js3TimelineGenerator,
+        VisTimelineService visTimelineGenerator
         )
     {
         _sourceReaderService = sourceReaderService ?? throw new ArgumentNullException(nameof(sourceReaderService));
@@ -29,16 +28,22 @@ public class TimelineGeneratorService
 
         var sourceItems = (await _sourceReaderService.ReadAllAsync()).ToList();
         
-        await _js3TimelineGenerator.GenerateAsync(new TimelineRequest
+        await GenerateAsync(_js3TimelineGenerator, sourceItems, Path.Combine(basePath, "js3"));
+        await GenerateAsync(_visTimelineGenerator, sourceItems, Path.Combine(basePath, "vis"));
+    }
+
+    private static async Task GenerateAsync<T>(
+        ITimelineGenerator<T> generator,
+        List<SourceItem> sourceItems,
+        string basePath
+        ) where T : class
+    {
+        var data = await generator.GenerateAsync(new TimelineRequest
         {
-            BasePath = Path.Combine(basePath, "js3"),
+            BasePath = basePath,
             Items = sourceItems
         });
-        
-        await _visTimelineGenerator.GenerateAsync(new TimelineRequest
-        {
-            BasePath = Path.Combine(basePath, "vis"),
-            Items = sourceItems
-        });
+
+        await generator.WriteAsync(data, basePath);
     }
 }

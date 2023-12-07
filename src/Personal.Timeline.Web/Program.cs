@@ -7,13 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 
 builder.Services.AddSingleton<IOutputWriter, OutputWriterService>();
-builder.Services.AddSingleton<ITimelineGenerator<Js3Timeline>, Js3TimelineService>();
-builder.Services.AddSingleton<ITimelineGenerator<VisTimeline>, VisTimelineService>();
+builder.Services.AddSingleton<Js3TimelineService>();
+builder.Services.AddSingleton<VisTimelineService>();
+builder.Services.AddSingleton<SourceReaderService>();
+builder.Services.AddSingleton<TimelineGeneratorService>();
 
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
 app.UseStaticFiles();
+
+// generate the timelines
+var timelineGenerator = app.Services
+    .GetRequiredService<TimelineGeneratorService>();
+timelineGenerator.GenerateAllAsync().GetAwaiter().GetResult();
 
 app.Run();
