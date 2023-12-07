@@ -8,8 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Models\Js3\" />
-      <Folder Include="output\js3\" />
-      <Folder Include="output\vis\" />
       <Folder Include="wwwroot\css\" />
       <Folder Include="wwwroot\js\" />
       <Folder Include="wwwroot\lib\" />
