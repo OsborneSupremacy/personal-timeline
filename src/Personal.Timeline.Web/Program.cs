@@ -15,21 +15,16 @@ builder.Services.AddSingleton<TimelineGeneratorService>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Timeline API");
-
-app.MapGet("/js3.json", 
-    async () =>
-        await ContentUtilities.ReadAllTextAsync("js3", "timeline.json")
+app.MapGet("/js3.json", () =>
+    ContentUtilities.ReadAllTextAsync("js3", "timeline.json")
 );
 
-app.MapGet("/vis/items.json", 
-    async () =>
-        await ContentUtilities.ReadAllTextAsync("vis", "items.json")
+app.MapGet("/vis/items.json", () =>
+    ContentUtilities.ReadAllTextAsync("vis", "items.json")
 );
 
-app.MapGet("/vis/groups.json", 
-    async () =>
-        await ContentUtilities.ReadAllTextAsync("vis", "groups.json")
+app.MapGet("/vis/groups.json", () =>
+    ContentUtilities.ReadAllTextAsync("vis", "groups.json")
 );
 
 app.UseStaticFiles();
