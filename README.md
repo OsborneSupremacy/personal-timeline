@@ -2,7 +2,7 @@
 
 This is a project to create a personal timeline (timeline of events in a person's life) using JavaScript timeline libraries.
 
-It is intended to only be run locally, since I'm building this for myself, and I don't want this data to be in a database.
+Given the nature of the data that will potentially be displayed on these timelines (relationships, medical history, financial history, etc.), this project is only intended to only be run locally. 
 
 I'm not yet committed to a particular timeline library, so I'm formatting the data to work with multiple libaries (two, currently).
 
