@@ -36,6 +36,10 @@ internal static class DateOnlyExtensions
     public static DateTime? ToDateTime(this DateOnly? date) =>
         date?.ToDateTime();
 
-    public static TimeSpan Difference(this DateOnly input, DateOnly other) =>
-        input.ToDateTime() - other.ToDateTime();
+    public static TimeSpan Difference(this DateOnly input, DateOnly other)
+    {
+        if (input < other)
+            return other.ToDateTime() - input.ToDateTime();
+        return input.ToDateTime() - other.ToDateTime();
+    }
 }

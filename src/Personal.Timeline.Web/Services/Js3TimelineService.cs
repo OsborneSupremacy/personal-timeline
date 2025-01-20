@@ -1,3 +1,4 @@
+using Personal.Timeline.Web.Extensions;
 using Personal.Timeline.Web.Models.Js3;
 
 namespace Personal.Timeline.Web.Services;
@@ -5,6 +6,8 @@ namespace Personal.Timeline.Web.Services;
 internal class Js3TimelineService : ITimelineGenerator<Js3Timeline>
 {
     private readonly IOutputWriter _outputWriter;
+
+    private const string LbHtml = "<br /><br />";
 
     public Js3TimelineService(IOutputWriter outputWriter)
     {
@@ -29,14 +32,14 @@ internal class Js3TimelineService : ITimelineGenerator<Js3Timeline>
             
             StringBuilder description = new();
 
-
-
+            foreach(var tdesc in item.DescribeTemporality())
+                description.AppendLine($"<cite>{tdesc}</cite><br />");
            
             if (!string.IsNullOrEmpty(item.Description1))
-                description.AppendLine($"<p>{item.Description1.Trim().Replace("\n", "<br /><br />").Replace("  ", "<br /><br />")}</p>");
+                description.AppendLine($"<p>{item.Description1.Trim().Replace("\n", LbHtml).Replace("  ", LbHtml)}</p>");
             
             if (!string.IsNullOrEmpty(item.Description2))
-                description.AppendLine($"<p>{item.Description2.Trim().Replace("\n", "<br /><br />").Replace("  ", "<br /><br />")}</p>");
+                description.AppendLine($"<p>{item.Description2.Trim().Replace("\n", LbHtml).Replace("  ", LbHtml)}</p>");
             
             if (!string.IsNullOrEmpty(item.Url))
                 description.AppendLine($"<p><a href=\"{item.Url}\">{item.UrlDescription}</a></p>");

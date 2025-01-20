@@ -82,6 +82,7 @@ internal static class OccurenceExtensions
     public static OccurenceType GetOccurenceType(this Occurence occurence) =>
         occurence.EndDate switch
         {
+            null => OccurenceType.Event,
             _ when occurence.StartDate.Equals(occurence.EndDate!.Value) => OccurenceType.Moment,
             _ => OccurenceType.Event
         };
@@ -136,6 +137,10 @@ internal static class OccurenceExtensions
             not null => $"{occurence.StartDate.ToIdiomatic()} to {occurence.EndDate.Value.ToIdiomatic()}",
             _ => $"{occurence.StartDate.ToIdiomatic()} and ongoing"
         };
+
+        yield return occurence.StartDate.Difference(occurence.EndDate ?? DateOnlyExtensions.Today)
+            .ToIdiomatic();
+
         yield return TemporalityDescribers[occurence.GetTemporalStatus()](occurence);
     }
 }

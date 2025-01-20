@@ -66,8 +66,14 @@ internal class VisTimelineService : ITimelineGenerator<VisTimeline>
         
         foreach (var record in records)
         {
+            StringBuilder content = new();
+
+            content.AppendLine($"<b>{record.Headline}</b><br />");
+            foreach(var tdesc in record.DescribeTemporality())
+                content.AppendLine($"<cite>{tdesc}</cite><br />");
+
             StringBuilder description = new();
-           
+
             if (!string.IsNullOrEmpty(record.Description1))
                 description.AppendLine($"<p>{record.Description1.Trim().Replace("\n", "<br /><br />").Replace("  ", "<br /><br />")}</p>");
             
@@ -86,7 +92,7 @@ internal class VisTimelineService : ITimelineGenerator<VisTimeline>
                 Type = record.StartDate == record.EndDate ? "point" : "range",
                 Group = group?.Title ?? string.Empty,
                 SubGroup = string.Empty,
-                Content = record.Headline,
+                Content = content.ToString(),
                 Start = record.StartDate,
                 End = record.EndDate ?? DateOnlyExtensions.Today,
                 Selectable = true
