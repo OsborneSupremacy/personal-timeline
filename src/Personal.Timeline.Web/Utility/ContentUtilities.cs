@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Utility;
 
-public static class ContentUtilities
+internal static class ContentUtilities
 {
     public static async Task<string> ReadAllTextAsync(params string[] paths)
     {

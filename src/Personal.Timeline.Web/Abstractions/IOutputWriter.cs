@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Abstractions;
 
-public interface IOutputWriter
+internal interface IOutputWriter
 {
     public Task WriteAsync<T>(
         WriteOutputRequest<T> request

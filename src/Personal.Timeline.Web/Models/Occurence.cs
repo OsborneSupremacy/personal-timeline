@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Models;
 
-public record SourceItem
+public record Occurence
 {
     public required string Headline { get; init; }
     
@@ -12,9 +12,9 @@ public record SourceItem
     
     public string? UrlDescription { get; init; }
     
-    public required DateTime StartDate { get; init; }
+    public required DateOnly StartDate { get; init; }
     
-    public DateTime? EndDate { get; init; }
+    public DateOnly? EndDate { get; init; }
     
     public required string Group { get; init; }
 }

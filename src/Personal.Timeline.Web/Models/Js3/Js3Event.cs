@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Personal.Timeline.Web.Models.Js3;
 
-public record Js3Event
+internal record Js3Event
 {
     public required string Group { get; init; }
     

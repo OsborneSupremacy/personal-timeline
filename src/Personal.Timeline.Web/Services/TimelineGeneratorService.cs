@@ -1,7 +1,7 @@
 
 namespace Personal.Timeline.Web.Services;
 
-public class TimelineGeneratorService
+internal class TimelineGeneratorService
 {
     private readonly SourceReaderService _sourceReaderService;
     
@@ -34,7 +34,7 @@ public class TimelineGeneratorService
 
     private static async Task GenerateAsync<T>(
         ITimelineGenerator<T> generator,
-        List<SourceItem> sourceItems,
+        List<Occurence> sourceItems,
         string basePath
         ) where T : class
     {

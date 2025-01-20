@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Models.Js3;
 
-public record Js3Timeline
+internal record Js3Timeline
 {
     public required Js3Title Title { get; init; }
     

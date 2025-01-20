@@ -2,7 +2,7 @@ using ClosedXML.Excel;
 
 namespace Personal.Timeline.Web.Services;
 
-public class SourceReaderService
+internal class SourceReaderService
 {
     private readonly IConfiguration _configuration;
     
@@ -11,7 +11,7 @@ public class SourceReaderService
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public Task<List<SourceItem>> ReadAllAsync()
+    public Task<List<Occurence>> ReadAllAsync()
     {
         var sourcePath = _configuration["SourceExcelPath"];
         
@@ -21,15 +21,15 @@ public class SourceReaderService
 
         var items = worksheet.RowsUsed()
             .Skip(1)
-            .Select(row => new SourceItem
+            .Select(row => new Occurence
             {
                 Headline = row.Cell(1).GetString(),
                 Description1 = row.Cell(2).GetString(),
                 Description2 = row.Cell(3).GetString(),
                 Url = row.Cell(4).GetString(),
                 UrlDescription = row.Cell(5).GetString(),
-                StartDate = row.Cell(6).GetDateTime(),
-                EndDate = string.IsNullOrEmpty(row.Cell(7).GetString()) ? null : row.Cell(7).GetDateTime(),
+                StartDate = DateOnly.FromDateTime(row.Cell(6).GetDateTime()),
+                EndDate = string.IsNullOrEmpty(row.Cell(7).GetString()) ? null : DateOnly.FromDateTime(row.Cell(7).GetDateTime()),
                 Group = row.Cell(8).GetString(),
             });
 

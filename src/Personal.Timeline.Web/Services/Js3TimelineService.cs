@@ -2,7 +2,7 @@ using Personal.Timeline.Web.Models.Js3;
 
 namespace Personal.Timeline.Web.Services;
 
-public class Js3TimelineService : ITimelineGenerator<Js3Timeline>
+internal class Js3TimelineService : ITimelineGenerator<Js3Timeline>
 {
     private readonly IOutputWriter _outputWriter;
 
@@ -28,6 +28,9 @@ public class Js3TimelineService : ITimelineGenerator<Js3Timeline>
                 };
             
             StringBuilder description = new();
+
+
+
            
             if (!string.IsNullOrEmpty(item.Description1))
                 description.AppendLine($"<p>{item.Description1.Trim().Replace("\n", "<br /><br />").Replace("  ", "<br /><br />")}</p>");

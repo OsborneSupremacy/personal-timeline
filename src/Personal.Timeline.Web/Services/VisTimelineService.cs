@@ -1,8 +1,9 @@
+using Personal.Timeline.Web.Extensions;
 using Personal.Timeline.Web.Models.Vis;
 
 namespace Personal.Timeline.Web.Services;
 
-public class VisTimelineService : ITimelineGenerator<VisTimeline>
+internal class VisTimelineService : ITimelineGenerator<VisTimeline>
 {
     private readonly IOutputWriter _outputWriter;
 
@@ -40,7 +41,7 @@ public class VisTimelineService : ITimelineGenerator<VisTimeline>
     }
 
     private static Task<Dictionary<string, VisGroup>> GenerateGroupsAsync(
-        IEnumerable<SourceItem> records
+        IEnumerable<Occurence> records
     )
     {
         var groups = records
@@ -49,18 +50,18 @@ public class VisTimelineService : ITimelineGenerator<VisTimeline>
             .ToDictionary
             (
                 g => g,
-                g => new VisGroup() { Id = g, Title = g, Content = g }
+                g => new VisGroup { Id = g, Title = g, Content = g }
             );
 
         return Task.FromResult(groups);
     }
     
     private static Task<List<VisItem>> GenerateItemsAsync(
-        List<SourceItem> records,
+        List<Occurence> records,
         IReadOnlyDictionary<string, VisGroup> groupDictionary
     )
     {
-        int id = 0;
+        var id = 0;
         List<VisItem> items = new();
         
         foreach (var record in records)
@@ -81,13 +82,13 @@ public class VisTimelineService : ITimelineGenerator<VisTimeline>
             VisItem item = new()
             {
                 Id = (++id).ToString(),
-                Title = record.Headline ?? string.Empty,
+                Title = record.Headline,
                 Type = record.StartDate == record.EndDate ? "point" : "range",
                 Group = group?.Title ?? string.Empty,
                 SubGroup = string.Empty,
-                Content = record.Headline ?? string.Empty,
-                Start = DateOnly.FromDateTime(record.StartDate),
-                End = record.EndDate.HasValue ? DateOnly.FromDateTime(record.EndDate.Value) : DateOnly.FromDateTime(DateTime.Now),
+                Content = record.Headline,
+                Start = record.StartDate,
+                End = record.EndDate ?? DateOnlyExtensions.Today,
                 Selectable = true
             };
             items.Add(item);

@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Models.Messaging;
 
-public record WriteOutputRequest<T>
+internal record WriteOutputRequest<T>
 {
     public required T Data { get; init; }
     

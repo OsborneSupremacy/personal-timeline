@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Personal.Timeline.Web.Services;
 
-public class OutputWriterService : IOutputWriter
+internal class OutputWriterService : IOutputWriter
 {
     private class LowerCaseNamingPolicy : JsonNamingPolicy
     {

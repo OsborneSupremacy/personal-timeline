@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Utility;
 
-public static class ReflectionUtilities
+internal static class ReflectionUtilities
 {
     public static string GetBaseOutputPath() =>
         Path.Combine(

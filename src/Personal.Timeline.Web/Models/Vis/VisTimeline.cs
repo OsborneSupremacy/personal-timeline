@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Models.Vis;
 
-public record VisTimeline
+internal record VisTimeline
 {
     public required List<VisGroup> Groups { get; init; }
     

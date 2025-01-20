@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Personal.Timeline.Web.Models.Js3;
 
-public record Js3Era
+internal record Js3Era
 {
     public Js3Text? Text { get; init; }
     
