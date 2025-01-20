@@ -11,9 +11,9 @@ public static class TimeSpanExtensions
 
         return totalDays switch
         {
-            >= daysInYear => $"{totalDays / daysInYear:F1} year(s)",
-            >= daysInMonth => $"{totalDays / daysInMonth:F1} month(s)",
-            _ => $"{(int)totalDays} day(s)"
+            >= daysInYear => $"{totalDays / daysInYear:F1} year{(totalDays / daysInYear > 1 ? "s" : string.Empty)}",
+            >= daysInMonth => $"{totalDays / daysInMonth:F1} month{(totalDays / daysInMonth > 1 ? "s" : string.Empty)}",
+            _ => $"{totalDays} day{(totalDays > 1 ? "s" : "")}"
         };
     }
 }

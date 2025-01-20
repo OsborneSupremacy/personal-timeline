@@ -8,7 +8,7 @@ internal static class OccurenceExtensions
         return $"{started.ToIdiomatic()} ago";
     };
 
-    private static readonly Func<Occurence, string> TodayMomentDescriber = occurence => "Today";
+    private static readonly Func<Occurence, string> TodayMomentDescriber = _ => "Today";
 
     private static readonly Func<Occurence, string> FutureMomentDescriber = occurence =>
     {
@@ -48,7 +48,7 @@ internal static class OccurenceExtensions
         return $"Today to {endsIn.ToIdiomatic()} from now";
     };
 
-    private static readonly Func<Occurence, string> TodayToIndefiniteEventDescriber = occurence => "Today and ongoing";
+    private static readonly Func<Occurence, string> TodayToIndefiniteEventDescriber = _ => "Today and ongoing";
 
     private static readonly Func<Occurence, string> FutureToFutureEventDescriber = occurence =>
     {
@@ -135,11 +135,13 @@ internal static class OccurenceExtensions
         yield return occurence.EndDate switch
         {
             not null => $"{occurence.StartDate.ToIdiomatic()} to {occurence.EndDate.Value.ToIdiomatic()}",
-            _ => $"{occurence.StartDate.ToIdiomatic()} and ongoing"
+            _ => $"{occurence.StartDate.ToIdiomatic()} to present"
         };
 
-        yield return occurence.StartDate.Difference(occurence.EndDate ?? DateOnlyExtensions.Today)
-            .ToIdiomatic();
+        // if ongoing, don't show the duration because we're already outputting it above.
+        if(occurence.EndDate is not null)
+            yield return occurence.StartDate.Difference(occurence.EndDate ?? DateOnlyExtensions.Today)
+                .ToIdiomatic();
 
         yield return TemporalityDescribers[occurence.GetTemporalStatus()](occurence);
     }
