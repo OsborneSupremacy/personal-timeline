@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Models;
 
-public record Occurence
+public record Occurrence
 {
     public required string Headline { get; init; }
     

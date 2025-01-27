@@ -41,7 +41,7 @@ internal class VisTimelineService : ITimelineGenerator<VisTimeline>
     }
 
     private static Task<Dictionary<string, VisGroup>> GenerateGroupsAsync(
-        IEnumerable<Occurence> records
+        IEnumerable<Occurrence> records
     )
     {
         var groups = records
@@ -57,7 +57,7 @@ internal class VisTimelineService : ITimelineGenerator<VisTimeline>
     }
     
     private static Task<List<VisItem>> GenerateItemsAsync(
-        List<Occurence> records,
+        List<Occurrence> records,
         IReadOnlyDictionary<string, VisGroup> groupDictionary
     )
     {

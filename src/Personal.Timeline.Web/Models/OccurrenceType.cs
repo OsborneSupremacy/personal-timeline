@@ -1,6 +1,6 @@
 namespace Personal.Timeline.Web.Models;
 
-public enum OccurenceType
+public enum OccurrenceType
 {
     /// <summary>
     /// An occurrence that can be represented as a single point in time.

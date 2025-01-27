@@ -11,7 +11,7 @@ internal class SourceReaderService
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public Task<List<Occurence>> ReadAllAsync()
+    public Task<List<Occurrence>> ReadAllAsync()
     {
         var sourcePath = _configuration["SourceExcelPath"];
         
@@ -21,7 +21,7 @@ internal class SourceReaderService
 
         var items = worksheet.RowsUsed()
             .Skip(1)
-            .Select(row => new Occurence
+            .Select(row => new Occurrence
             {
                 Headline = row.Cell(1).GetString(),
                 Description1 = row.Cell(2).GetString(),

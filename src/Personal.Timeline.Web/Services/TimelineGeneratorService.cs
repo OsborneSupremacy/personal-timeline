@@ -34,7 +34,7 @@ internal class TimelineGeneratorService
 
     private static async Task GenerateAsync<T>(
         ITimelineGenerator<T> generator,
-        List<Occurence> sourceItems,
+        List<Occurrence> sourceItems,
         string basePath
         ) where T : class
     {

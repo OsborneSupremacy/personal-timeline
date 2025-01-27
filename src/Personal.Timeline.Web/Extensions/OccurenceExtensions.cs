@@ -2,68 +2,68 @@ namespace Personal.Timeline.Web.Extensions;
 
 internal static class OccurenceExtensions
 {
-    private static readonly Func<Occurence, string> PastMomentDescriber = occurence =>
+    private static readonly Func<Occurrence, string> PastMomentDescriber = occurence =>
     {
         var started = DateOnlyExtensions.Today.Difference(occurence.StartDate);
         return $"{started.ToIdiomatic()} ago";
     };
 
-    private static readonly Func<Occurence, string> TodayMomentDescriber = _ => "Today";
+    private static readonly Func<Occurrence, string> TodayMomentDescriber = _ => "Today";
 
-    private static readonly Func<Occurence, string> FutureMomentDescriber = occurence =>
+    private static readonly Func<Occurrence, string> FutureMomentDescriber = occurence =>
     {
         var startsIn = occurence.StartDate.Difference(DateOnlyExtensions.Today);
         return $"{startsIn.ToIdiomatic()} from now";
     };
 
-    private static readonly Func<Occurence, string> PastToPastEventDescriber = occurence =>
+    private static readonly Func<Occurrence, string> PastToPastEventDescriber = occurence =>
     {
         var started = DateOnlyExtensions.Today.Difference(occurence.StartDate);
         var ended = DateOnlyExtensions.Today.Difference(occurence.EndDate!.Value);
         return $"{started.ToIdiomatic()} to {ended.ToIdiomatic()} ago";
     };
 
-    private static readonly Func<Occurence, string> PastToTodayEventDescriber = occurence =>
+    private static readonly Func<Occurrence, string> PastToTodayEventDescriber = occurence =>
     {
         var started = DateOnlyExtensions.Today.Difference(occurence.StartDate);
         return $"{started.ToIdiomatic()} ago to today";
     };
 
-    private static readonly Func<Occurence, string> PastToFutureEventDescriber = occurence =>
+    private static readonly Func<Occurrence, string> PastToFutureEventDescriber = occurence =>
     {
         var started = DateOnlyExtensions.Today.Difference(occurence.StartDate);
         var endsIn = occurence.EndDate!.Value.Difference(DateOnlyExtensions.Today);
         return $"{started.ToIdiomatic()} to {endsIn.ToIdiomatic()} from now";
     };
 
-    private static readonly Func<Occurence, string> PastToIndefiniteEventDescriber = occurence =>
+    private static readonly Func<Occurrence, string> PastToIndefiniteEventDescriber = occurence =>
     {
         var started = DateOnlyExtensions.Today.Difference(occurence.StartDate);
         return $"{started.ToIdiomatic()} ago and ongoing";
     };
 
-    private static readonly Func<Occurence, string> TodayToFutureEventDescriber = occurence =>
+    private static readonly Func<Occurrence, string> TodayToFutureEventDescriber = occurence =>
     {
         var endsIn = occurence.EndDate!.Value.Difference(DateOnlyExtensions.Today);
         return $"Today to {endsIn.ToIdiomatic()} from now";
     };
 
-    private static readonly Func<Occurence, string> TodayToIndefiniteEventDescriber = _ => "Today and ongoing";
+    private static readonly Func<Occurrence, string> TodayToIndefiniteEventDescriber = _ => "Today and ongoing";
 
-    private static readonly Func<Occurence, string> FutureToFutureEventDescriber = occurence =>
+    private static readonly Func<Occurrence, string> FutureToFutureEventDescriber = occurence =>
     {
         var startsIn = occurence.StartDate.Difference(DateOnlyExtensions.Today);
         var endsIn = occurence.EndDate!.Value.Difference(DateOnlyExtensions.Today);
         return $"{startsIn.ToIdiomatic()} to {endsIn.ToIdiomatic()} from now";
     };
 
-    private static readonly Func<Occurence, string> FutureToIndefiniteEventDescriber = occurence =>
+    private static readonly Func<Occurrence, string> FutureToIndefiniteEventDescriber = occurence =>
     {
         var startsIn = occurence.StartDate.Difference(DateOnlyExtensions.Today);
         return $"{startsIn.ToIdiomatic()} from now and ongoing";
     };
 
-    private static readonly Dictionary<TemporalStatus, Func<Occurence, string>> TemporalityDescribers =
+    private static readonly Dictionary<TemporalStatus, Func<Occurrence, string>> TemporalityDescribers =
         new()
         {
             { TemporalStatus.Past, PastMomentDescriber },
@@ -79,70 +79,78 @@ internal static class OccurenceExtensions
             { TemporalStatus.FutureToIndefinite, FutureToIndefiniteEventDescriber }
         };
 
-    public static OccurenceType GetOccurenceType(this Occurence occurence) =>
-        occurence.EndDate switch
+    public static OccurrenceType GetOccurenceType(this Occurrence occurrence) =>
+        occurrence.EndDate switch
         {
-            null => OccurenceType.Event,
-            _ when occurence.StartDate.Equals(occurence.EndDate!.Value) => OccurenceType.Moment,
-            _ => OccurenceType.Event
+            null => OccurrenceType.Event,
+            _ when occurrence.StartDate.Equals(occurrence.EndDate!.Value) => OccurrenceType.Moment,
+            _ => OccurrenceType.Event
         };
 
-    private static TemporalStatus GetTemporalStatus(this Occurence occurence)
+    private static TemporalStatus GetTemporalStatus(this Occurrence occurrence)
     {
-        var occurenceType = occurence.GetOccurenceType();
+        var occurenceType = occurrence.GetOccurenceType();
         return occurenceType switch
         {
-            OccurenceType.Moment => occurence.StartDate switch
+            OccurrenceType.Moment => occurrence.StartDate switch
             {
-                _ when occurence.StartDate.IsPast() => TemporalStatus.Past,
-                _ when occurence.StartDate.IsToday() => TemporalStatus.Today,
+                _ when occurrence.StartDate.IsPast() => TemporalStatus.Past,
+                _ when occurrence.StartDate.IsToday() => TemporalStatus.Today,
                 _ => TemporalStatus.Future
             },
-            _ => occurence.EndDate switch
+            _ => occurrence.EndDate switch
             {
-                _ when occurence.EndDate.IsPast() => TemporalStatus.PastToPast,
-                _ when occurence.StartDate.IsPast() && occurence.EndDate.IsToday() => TemporalStatus.PastToToday,
-                _ when occurence.StartDate.IsPast() && occurence.EndDate.IsFuture() => TemporalStatus.PastToFuture,
-                _ when occurence.StartDate.IsPast() && occurence.EndDate.IsIndefinite() => TemporalStatus.PastToIndefinite,
+                _ when occurrence.EndDate.IsPast() => TemporalStatus.PastToPast,
+                _ when occurrence.StartDate.IsPast() && occurrence.EndDate.IsToday() => TemporalStatus.PastToToday,
+                _ when occurrence.StartDate.IsPast() && occurrence.EndDate.IsFuture() => TemporalStatus.PastToFuture,
+                _ when occurrence.StartDate.IsPast() && occurrence.EndDate.IsIndefinite() => TemporalStatus.PastToIndefinite,
 
-                _ when occurence.StartDate.IsToday() && occurence.EndDate.IsFuture() => TemporalStatus.TodayToFuture,
-                _ when occurence.StartDate.IsToday() && occurence.EndDate.IsIndefinite() => TemporalStatus.TodayToIndefinite,
+                _ when occurrence.StartDate.IsToday() && occurrence.EndDate.IsFuture() => TemporalStatus.TodayToFuture,
+                _ when occurrence.StartDate.IsToday() && occurrence.EndDate.IsIndefinite() => TemporalStatus.TodayToIndefinite,
 
-                _ when occurence.StartDate.IsFuture() && occurence.EndDate.IsFuture() => TemporalStatus.FutureToFuture,
-                _ when occurence.StartDate.IsFuture() && occurence.EndDate.IsIndefinite() => TemporalStatus.FutureToIndefinite,
+                _ when occurrence.StartDate.IsFuture() && occurrence.EndDate.IsFuture() => TemporalStatus.FutureToFuture,
+                _ when occurrence.StartDate.IsFuture() && occurrence.EndDate.IsIndefinite() => TemporalStatus.FutureToIndefinite,
 
-                _ => throw new ArgumentOutOfRangeException($"Unexpected date combination. Start: {occurence.StartDate}, End: {occurence.EndDate}")
+                _ => throw new ArgumentOutOfRangeException($"Unexpected date combination. Start: {occurrence.StartDate}, End: {occurrence.EndDate}")
             }
         };
     }
 
-    public static IEnumerable<string> DescribeTemporality(this Occurence occurence)
-    {
-        var occurenceType = occurence.GetOccurenceType();
-        return occurenceType == OccurenceType.Moment ?
-            occurence.DescribeMomentTemporality() :
-            occurence.DescribeEventTemporality();
-    }
-
-    private static IEnumerable<string> DescribeMomentTemporality(this Occurence occurence)
-    {
-        yield return occurence.StartDate.ToIdiomatic();
-        yield return TemporalityDescribers[occurence.GetTemporalStatus()](occurence);
-    }
-
-    private static IEnumerable<string> DescribeEventTemporality(this Occurence occurence)
-    {
-        yield return occurence.EndDate switch
+    public static IEnumerable<string> DescribeTemporality(this Occurrence occurrence) =>
+        occurrence.GetOccurenceType() switch
         {
-            not null => $"{occurence.StartDate.ToIdiomatic()} to {occurence.EndDate.Value.ToIdiomatic()}",
-            _ => $"{occurence.StartDate.ToIdiomatic()} to present"
+            OccurrenceType.Moment => occurrence.DescribeMomentTemporality(),
+            _ => occurrence.DescribeEventTemporality()
         };
 
-        // if ongoing, don't show the duration because we're already outputting it above.
-        if(occurence.EndDate is not null)
-            yield return occurence.StartDate.Difference(occurence.EndDate ?? DateOnlyExtensions.Today)
-                .ToIdiomatic();
+    private static IEnumerable<string> DescribeMomentTemporality(this Occurrence occurrence)
+    {
+        yield return occurrence.StartDate.ToIdiomatic();
+        yield return TemporalityDescribers[occurrence.GetTemporalStatus()](occurrence);
+    }
 
-        yield return TemporalityDescribers[occurence.GetTemporalStatus()](occurence);
+    private static IEnumerable<string> DescribeEventTemporality(this Occurrence occurrence) =>
+        occurrence.EndDate switch
+        {
+            null => occurrence.DescribeOngoingEventTemporality(),
+            _ => occurrence.DescribeCompletedEventTemporality()
+        };
+
+    private static IEnumerable<string> DescribeCompletedEventTemporality(this Occurrence occurrence)
+    {
+        yield return $"{occurrence.StartDate.ToIdiomatic()} to {occurrence.EndDate!.Value.ToIdiomatic()}";
+        yield return occurrence.StartDate
+            .Difference(occurrence.EndDate!.Value)
+            .ToIdiomatic();
+        yield return TemporalityDescribers[occurrence.GetTemporalStatus()](occurrence);
+    }
+
+    private static IEnumerable<string> DescribeOngoingEventTemporality(this Occurrence occurrence)
+    {
+        yield return $"{occurrence.StartDate.ToIdiomatic()} to present";
+        yield return occurrence.StartDate
+            .Difference(DateOnlyExtensions.Today)
+            .ToIdiomatic();
+        yield return TemporalityDescribers[occurrence.GetTemporalStatus()](occurrence);
     }
 }
